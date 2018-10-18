@@ -1,5 +1,8 @@
-#include <dStepper.h>
-#include <PollTimer.h>
+#include <Arduino.h>
+
+#include "FrequencyTimer2/FrequencyTimer2.h"  // https://github.com/PaulStoffregen/FrequencyTimer2
+#include "stepperMotor/stepperMotor.h"
+#include "PollTimer/PollTimer.h"
 
 #include "pin_map.h"
 #include "setup.h"
