@@ -5,7 +5,7 @@
 #include "PollTimer/PollTimer.h"
 
 #include "pin_map.h"
-#include "setup.h"
+#include "Lucid.h"
 
 void setup() {
   
