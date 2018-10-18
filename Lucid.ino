@@ -8,14 +8,14 @@
 #include "Lucid.h"
 
 void setup() {
-  
-  Serial.begin(250000);
-  while( !Serial ) delay(1); 
 
-  startTimers();
+   Serial.begin(250000);
+   while( !Serial ) delay(1);
+
+   startTimers();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+   // put your main code here, to run repeatedly:
 
 }
