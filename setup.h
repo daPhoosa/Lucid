@@ -3,15 +3,52 @@ const int BUTTON_CHECK_RATE   = 100;
 const int DISPLAY_UPDATE_RATE = 10;
 const int MAINTENANCE_RATE    = 1;
 
-struct EXTRUDER
-{
-   float x = 0.0f;
-   float y = 0.0f;
-   float z = 0.0f;
+#define COMPUTE_STEP_PER_CC(d,p,s) (100.0f * s / ( 0.25f * PI * d * d * p ))
 
-   EXTRUDER() : x(0.0f), y(0.0f), z(0.0f) {}
-   EXTRUDER( float t_x, float t_y, float t_z ) : x(t_x), y(t_y), z(t_z) {}
-};
+const float CYL_1_DIAMETER     = 28.0f;
+const float CYL_1_PITCH        = 2.0;
+const float CYL_1_STEP_PER_REV = 200.0f * 16.0f;
+const float CYL_1_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_1_DIAMETER, CYL_1_PITCH, CYL_1_STEP_PER_REV);
+
+const float CYL_2_DIAMETER     = 28.0f;
+const float CYL_2_PITCH        = 2.0;
+const float CYL_2_STEP_PER_REV = 200.0f * 16.0f;
+const float CYL_2_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_2_DIAMETER, CYL_2_PITCH, CYL_2_STEP_PER_REV);
+
+const float CYL_3_DIAMETER     = 28.0f;
+const float CYL_3_PITCH        = 2.0;
+const float CYL_3_STEP_PER_REV = 200.0f * 16.0f;
+const float CYL_3_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_3_DIAMETER, CYL_3_PITCH, CYL_3_STEP_PER_REV);
+
+const float CYL_4_DIAMETER     = 28.0f;
+const float CYL_4_PITCH        = 2.0;
+const float CYL_4_STEP_PER_REV = 200.0f * 16.0f;
+const float CYL_4_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_4_DIAMETER, CYL_4_PITCH, CYL_4_STEP_PER_REV);
+
+const float CYL_5_DIAMETER     = 28.0f;
+const float CYL_5_PITCH        = 2.0;
+const float CYL_5_STEP_PER_REV = 200.0f * 16.0f;
+const float CYL_5_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_5_DIAMETER, CYL_5_PITCH, CYL_5_STEP_PER_REV);
+
+const float CYL_6_DIAMETER     = 28.0f;
+const float CYL_6_PITCH        = 2.0;
+const float CYL_6_STEP_PER_REV = 200.0f * 16.0f;
+const float CYL_6_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_6_DIAMETER, CYL_6_PITCH, CYL_6_STEP_PER_REV);
+
+const float CYL_7_DIAMETER     = 28.0f;
+const float CYL_7_PITCH        = 2.0;
+const float CYL_7_STEP_PER_REV = 200.0f * 16.0f;
+const float CYL_7_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_7_DIAMETER, CYL_7_PITCH, CYL_7_STEP_PER_REV);
+
+const float CYL_8_DIAMETER     = 28.0f;
+const float CYL_8_PITCH        = 2.0;
+const float CYL_8_STEP_PER_REV = 200.0f * 16.0f;
+const float CYL_8_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_8_DIAMETER, CYL_8_PITCH, CYL_8_STEP_PER_REV);
+
+const float CYL_9_DIAMETER     = 28.0f;
+const float CYL_9_PITCH        = 2.0;
+const float CYL_9_STEP_PER_REV = 200.0f * 16.0f;
+const float CYL_9_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_9_DIAMETER, CYL_9_PITCH, CYL_9_STEP_PER_REV);
 
 
 PollTimer pulseGen( MOTOR_PULSE_RATE );
