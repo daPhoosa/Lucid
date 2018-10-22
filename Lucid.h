@@ -15,9 +15,9 @@ uButton button_red(    RED_BUTTON_PIN,    1 );
 
 void setupButtons()
 {
-    pinMode( GREEN_BUTTON_PIN,  INPUT_PULLUP );
-    pinMode( YELLOW_BUTTON_PIN, INPUT_PULLUP );
-    pinMode( RED_BUTTON_PIN,    INPUT_PULLUP );
+   pinMode( GREEN_BUTTON_PIN,  INPUT_PULLUP );
+   pinMode( YELLOW_BUTTON_PIN, INPUT_PULLUP );
+   pinMode( RED_BUTTON_PIN,    INPUT_PULLUP );
 }
 
 
@@ -93,6 +93,19 @@ void enableMotors()
    digitalWrite( CYL_2_ENBL_PIN, LOW );
    digitalWrite( CYL_3_ENBL_PIN, LOW );
    digitalWrite( CYL_4_ENBL_PIN, LOW );
+}
+
+void disableMotors()
+{
+   CYL_1.setSpeed( 0.0 );
+   CYL_2.setSpeed( 0.0 );
+   CYL_3.setSpeed( 0.0 );
+   CYL_4.setSpeed( 0.0 );
+   
+   digitalWrite( CYL_1_ENBL_PIN, HIGH );
+   digitalWrite( CYL_2_ENBL_PIN, HIGH );
+   digitalWrite( CYL_3_ENBL_PIN, HIGH );
+   digitalWrite( CYL_4_ENBL_PIN, HIGH );
 }
 
 void startTimers()

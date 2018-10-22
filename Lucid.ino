@@ -35,22 +35,29 @@ void loop() {
    
    if( control.check() )
    {
-      float static angle = 0.0f;
-
-      angle += .001;
-      if( angle > 6.2831853f ) angle -= 6.2831853f;
-
-      cyl_1_position = 1.0 * sinf( angle );
-
-      //CYL_1.setSpeedByPostionMM( cyl_1_position, MOTOR_PULSE_RATE );
-      //CYL_1.setSpeed( MOTOR_PULSE_RATE * (cyl_1_position - CYL_1.getPositionMM() ));
-      CYL_1.setSpeed( 0.0 );
+      if( extrudeActive )
+      {
+         CYL_1.setSpeed( 1.0 );
+         CYL_2.setSpeed( 1.0 );
+         CYL_3.setSpeed( 1.0 );
+         CYL_4.setSpeed( 1.0 );
+      }
+      else
+      {
+         CYL_1.setSpeed( 0.0 );
+         CYL_2.setSpeed( 0.0 );
+         CYL_3.setSpeed( 0.0 );
+         CYL_4.setSpeed( 0.0 );
+      }
+      
    }
    else if( buttons.check() )
    {
       if( button_green.check() )
       {
          Serial.println("GREEN");
+         extrudeActive = !extrudeActive;
+         if( extrudeActive ) enableMotors();
       }
 
       if( button_yellow.check() )
@@ -69,6 +76,9 @@ void loop() {
    }
    else if( maintenance.check() )
    {
+      if( !extrudeActive ) disableMotors();
+
+      
       //Serial.println( funCounter );
       funCounter = 0;
    }
