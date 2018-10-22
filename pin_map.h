@@ -5,25 +5,25 @@
 #define CYL_1_STEP_PIN 3
 #define CYL_1_DIR_PIN  4
 
-#define B_MOTOR_ENBL_PIN 6
-#define B_MOTOR_STEP_PIN 7
-#define B_MOTOR_DIR_PIN  8
+#define CYL_2_ENBL_PIN 6
+#define CYL_2_STEP_PIN 7
+#define CYL_2_DIR_PIN  8
 
-#define C_MOTOR_ENBL_PIN 23
-#define C_MOTOR_STEP_PIN 22
-#define C_MOTOR_DIR_PIN  21
+#define CYL_3_ENBL_PIN 23
+#define CYL_3_STEP_PIN 22
+#define CYL_3_DIR_PIN  21
 
-#define D_MOTOR_ENBL_PIN 39
-#define D_MOTOR_STEP_PIN 38
-#define D_MOTOR_DIR_PIN  37
+#define CYL_4_ENBL_PIN 39
+#define CYL_4_STEP_PIN 38
+#define CYL_4_DIR_PIN  37
 
-#define E_MOTOR_ENBL_PIN 36
-#define E_MOTOR_STEP_PIN 35
-#define E_MOTOR_DIR_PIN  34
+#define CYL_5_ENBL_PIN 36
+#define CYL_5_STEP_PIN 35
+#define CYL_5_DIR_PIN  34
 
-#define F_MOTOR_ENBL_PIN 27
-#define F_MOTOR_STEP_PIN 28
-#define F_MOTOR_DIR_PIN  29
+#define CYL_6_ENBL_PIN 27
+#define CYL_6_STEP_PIN 28
+#define CYL_6_DIR_PIN  29
 
 #define X_ENDSTOP_PIN 24
 #define Y_ENDSTOP_PIN 25
@@ -31,10 +31,10 @@
 //#define X_MIN_ENDSTOP_PIN 33
 //#define Y_MIN_ENDSTOP_PIN 32
 //#define Z_MIN_ENDSTOP_PIN 30
-
-#define SELECT_BUTTON_PIN 17
-#define UP_BUTTON_PIN A11
-#define DOWN_BUTTON_PIN A10
+ 
+#define GREEN_BUTTON_PIN  17    // 17, A11, A10
+#define YELLOW_BUTTON_PIN A11
+#define RED_BUTTON_PIN    A10
 
 #define BED_HEATER_PWM_PIN 9
 #define EXTRUDER1_PWM_PIN  20
