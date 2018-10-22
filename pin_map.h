@@ -1,9 +1,9 @@
 // **** PIN DEFINES FOR TEENSY 3.5/3.6 ****
 // 5 is intentionally ommitted
 
-#define A_MOTOR_ENBL_PIN 2
-#define A_MOTOR_STEP_PIN 3
-#define A_MOTOR_DIR_PIN  4
+#define CYL_1_ENBL_PIN 2
+#define CYL_1_STEP_PIN 3
+#define CYL_1_DIR_PIN  4
 
 #define B_MOTOR_ENBL_PIN 6
 #define B_MOTOR_STEP_PIN 7

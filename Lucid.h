@@ -2,7 +2,8 @@
 
 
 
-const int MOTOR_PULSE_RATE    = 10000;
+const int MOTOR_PULSE_RATE    = 20000;
+const int CONTROL_RATE        = 1000;
 const int BUTTON_CHECK_RATE   = 100;
 const int DISPLAY_UPDATE_RATE = 10;
 const int MAINTENANCE_RATE    = 1;
@@ -55,18 +56,39 @@ const float CYL_9_STEP_PER_REV = 200.0f * 16.0f;
 const float CYL_9_STEP_PER_CC  = COMPUTE_STEP_PER_CC( CYL_9_DIAMETER, CYL_9_PITCH, CYL_9_STEP_PER_REV);
 
 
-PollTimer pulseGen( MOTOR_PULSE_RATE );
+PollTimer control( CONTROL_RATE );
 PollTimer buttons( BUTTON_CHECK_RATE );
-PollTimer display( DISPLAY_UPDATE_RATE ):
+PollTimer display( DISPLAY_UPDATE_RATE );
 PollTimer maintenance( MAINTENANCE_RATE );
 
 
-dStepper CYL_1( CYL_1_STEP_PER_CC, A_MOTOR_DIRECTION, MOTOR_PULSE_RATE, CYL_1_STEP_PIN, CYL_1_DIR_PIN );
+stepperMotor CYL_1( CYL_1_STEP_PER_CC, 1, MOTOR_PULSE_RATE, CYL_1_STEP_PIN, CYL_1_DIR_PIN );
+
+
+void enableMotors()
+{
+    pinMode( CYL_1_ENBL_PIN, OUTPUT );
+    digitalWrite( CYL_1_ENBL_PIN, LOW );
+}
 
 void startTimers()
 {
-   pulseGen.start();
+   control.start();
    buttons.start();
-   display.start():
+   display.start();
    maintenance.start();
+}
+
+
+void MotorControlISR()
+{
+    CYL_1.step();
+}
+
+
+void startStepperTickISR()
+{
+   pinMode(FREQUENCYTIMER2_PIN, OUTPUT);
+   FrequencyTimer2::setPeriod( 1000000 / MOTOR_PULSE_RATE );
+   FrequencyTimer2::setOnOverflow(MotorControlISR);
 }
