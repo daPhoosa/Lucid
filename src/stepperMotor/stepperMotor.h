@@ -26,7 +26,10 @@
    {
       public:
 
+         stepperMotor();
          stepperMotor( float t_stepsPerMM, int t_direction, uint32_t t_tickRateHz, int t_stepPin, int t_dirPin );
+
+         void setup( float t_stepsPerMM, int t_direction, uint32_t t_tickRateHz, int t_stepPin, int t_dirPin );
 
          void setSpeed( float feedRate );
          void setSpeedByPostionMM( float targetPosMM, float Hz );

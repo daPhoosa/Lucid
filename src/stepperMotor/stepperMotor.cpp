@@ -19,7 +19,18 @@
 #include "stepperMotor.h"
 
 
+stepperMotor::stepperMotor()
+{
+}
+
+
 stepperMotor::stepperMotor( float t_stepsPerMM, int t_direction, uint32_t t_tickRateHz, int t_stepPin, int t_dirPin )
+{
+   setup( t_stepsPerMM, t_direction, t_tickRateHz, t_stepPin, t_dirPin );
+}
+
+
+void stepperMotor::setup( float t_stepsPerMM, int t_direction, uint32_t t_tickRateHz, int t_stepPin, int t_dirPin )
 {
    stepsPerMM = t_stepsPerMM;
    MMPerStep  = 1.0f / stepsPerMM;
@@ -48,7 +59,6 @@ stepperMotor::stepperMotor( float t_stepsPerMM, int t_direction, uint32_t t_tick
       FORWARD = 0;
       REVERSE = 1;
    }
-
 }
 
 
