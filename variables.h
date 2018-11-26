@@ -12,11 +12,19 @@ const int RED    = 1;
 const int YELLOW = 2;
 const int WHITE  = 3;
 
+float mixVolume = 1.0; // CC
+uint32_t extrudeTime = 0;
+uint32_t extrudeStartTime;
+
 
 
 
 
 struct COMPONENT_DATA_t
 {
+   float ratio = 0;
+   float speed = 0;
+
+   stepperMotor motor();
    
-} GOOP[MAX_COMPONENT_COUNT];
+} C[MAX_COMPONENT_COUNT];

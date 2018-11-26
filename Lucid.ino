@@ -10,17 +10,11 @@
 #include "Lucid.h"
 
 
-float blue   = 1;
-float red    = 1;
-float yellow = 1;
-float white  = 1;
-
-const float volume = 0.5; // CC
-
 void setup() {
 
    Serial.begin(250000);
-   while( !Serial ) delay(1);
+   int i = 0;
+   while( !Serial && i++ < 1000 ) delay(1); // wait up to 1s for serial to connect
 
    setupButtons();
 
@@ -35,19 +29,30 @@ void loop() {
    
    if( control.check() )
    {
+
       if( extrudeActive )
       {
-         CYL_1.setSpeed( 1.0 );
-         CYL_2.setSpeed( 1.0 );
-         CYL_3.setSpeed( 1.0 );
-         CYL_4.setSpeed( 1.0 );
+         if( millis() - extrudeStartTime > extrudeTime )
+         {
+            extrudeActive = false;
+            disableMotors();
+         }
+         else
+         {
+            C[BLUE  ].motor.setSpeed( C[BLUE  ].speed );
+            C[RED   ].motor.setSpeed( C[RED   ].speed );
+            C[YELLOW].motor.setSpeed( C[YELLOW].speed );
+            C[WHITE ].motor.setSpeed( C[WHITE ].speed );
+         }
+         
       }
-      else
+
+      if( !extrudeActive )
       {
-         CYL_1.setSpeed( 0.0 );
-         CYL_2.setSpeed( 0.0 );
-         CYL_3.setSpeed( 0.0 );
-         CYL_4.setSpeed( 0.0 );
+         C[BLUE  ].motor.setSpeed( 0 );
+         C[RED   ].motor.setSpeed( 0 );
+         C[YELLOW].motor.setSpeed( 0 );
+         C[WHITE ].motor.setSpeed( 0 );
       }
       
    }
@@ -57,7 +62,11 @@ void loop() {
       {
          Serial.println("GREEN");
          extrudeActive = !extrudeActive;
-         if( extrudeActive ) enableMotors();
+         if( extrudeActive ) 
+         {
+            enableMotors();
+            readRecipie();
+         }
       }
 
       if( button_yellow.check() )
@@ -83,4 +92,15 @@ void loop() {
       funCounter = 0;
    }
    
+}
+
+
+void readRecipie()
+{
+   C[BLUE  ].ratio = 1.0;
+   C[RED   ].ratio = 1.0;
+   C[YELLOW].ratio = 1.0;
+   C[WHITE ].ratio = 1.0;
+
+   mixVolume = 1.0;
 }
