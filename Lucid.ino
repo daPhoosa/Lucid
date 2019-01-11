@@ -5,63 +5,79 @@
 #include "src/PollTimer/PollTimer.h"
 #include "src/uButton/uButton.h"
 
+#include "display.h"
+
 #include "pin_map.h"
+#include "communication.h"
+
 #include "variables.h"
+#include "motors.h"
 #include "Lucid.h"
+#include "operations.h"
+#include "colors.h"
 
 
-void setup() {
-
-   Serial.begin(250000);
-   int i = 0;
-   while( !Serial && i++ < 1000 ) delay(1); // wait up to 1s for serial to connect
+void setup() 
+{
+   start_serial();
 
    setupButtons();
 
-   enableMotors();
+   setupMotors();
 
    startStepperTickISR();
 
    startTimers();
 }
 
-void loop() {
+
+void loop() 
+{
    
    if( control.check() )
    {
-
-      if( extrudeActive )
+      switch( machine_state )
       {
-         if( millis() - extrudeStartTime > extrudeTime )
-         {
-            extrudeActive = false;
-            disableMotors();
-         }
-         else
-         {
-            C[BLUE  ].motor.setSpeed( C[BLUE  ].speed );
-            C[RED   ].motor.setSpeed( C[RED   ].speed );
-            C[YELLOW].motor.setSpeed( C[YELLOW].speed );
-            C[WHITE ].motor.setSpeed( C[WHITE ].speed );
-         }
-         
-      }
+         case sleep:
+            sleep_operations();
+            break;
 
-      if( !extrudeActive )
-      {
-         C[BLUE  ].motor.setSpeed( 0 );
-         C[RED   ].motor.setSpeed( 0 );
-         C[YELLOW].motor.setSpeed( 0 );
-         C[WHITE ].motor.setSpeed( 0 );
+         case dwell:
+            dwell_operations();
+            break;
+
+         case prePurge:
+            pre_purge_operations();
+            break;
+
+         case dispense:
+            dispense_operations();
+            break;
+
+         case postPurge:
+            post_purge_operations();
+            break;
+
+         case fill:
+            fill_operation();
+            break;
+
+         case empty:
+            empty_operation();
+            break;
+
+         default:
+            break;
       }
-      
    }
    else if( buttons.check() )
    {
       if( button_green.check() )
       {
          Serial.println("GREEN");
+
          extrudeActive = !extrudeActive;
+         
          if( extrudeActive ) 
          {
             enableMotors();
@@ -72,11 +88,37 @@ void loop() {
       if( button_yellow.check() )
       {
          Serial.println("YELLOW");
+
+         if( machine_state == fill )
+         {
+            selected_cyl++;
+         }
+         else
+         { 
+            selected_cyl = 0;
+            machine_state = fill;
+            disableMotors();
+            Serial.println(machine_state);
+         }
+         Serial.println("FILL");
       }
 
       if( button_red.check() )
       {
          Serial.println("RED");
+
+         if( machine_state == empty )
+         {
+            selected_cyl++;
+         }
+         else
+         { 
+            selected_cyl = 0;
+            machine_state = empty;
+            disableMotors();
+            Serial.println("EMPTY");
+         }
+         Serial.println(selected_cyl);
       }
    }
    else if( display.check() )
@@ -85,13 +127,12 @@ void loop() {
    }
    else if( maintenance.check() )
    {
-      if( !extrudeActive ) disableMotors();
+      //if( !extrudeActive ) disableMotors();
 
       
       //Serial.println( funCounter );
       funCounter = 0;
    }
-   
 }
 
 

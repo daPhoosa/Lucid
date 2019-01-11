@@ -25,16 +25,20 @@
 #define CYL_6_STEP_PIN 28
 #define CYL_6_DIR_PIN  29
 
-#define X_ENDSTOP_PIN 24
-#define Y_ENDSTOP_PIN 25
-#define Z_ENDSTOP_PIN 26
+//#define X_ENDSTOP_PIN 24
+//#define Y_ENDSTOP_PIN 25
+//#define Z_ENDSTOP_PIN 26
 //#define X_MIN_ENDSTOP_PIN 33
 //#define Y_MIN_ENDSTOP_PIN 32
 //#define Z_MIN_ENDSTOP_PIN 30
+
+#define GREEN_BUTTON_PIN  24 // borrow these pins from the endstops
+#define YELLOW_BUTTON_PIN 26
+#define RED_BUTTON_PIN    25
  
-#define GREEN_BUTTON_PIN  17    // 17, A11, A10
-#define YELLOW_BUTTON_PIN A11
-#define RED_BUTTON_PIN    A10
+//#define GREEN_BUTTON_PIN  17    // 17, A11, A10 (grr... those analog pins don't work with deigitalRead()... )
+//#define YELLOW_BUTTON_PIN A11
+//#define RED_BUTTON_PIN    A10
 
 #define BED_HEATER_PWM_PIN 9
 #define EXTRUDER1_PWM_PIN  20
