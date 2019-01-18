@@ -109,22 +109,22 @@ void fill_operation()
          break;
 
       case 1:
-         CYL_1.setSpeed( -1.5 );
+         CYL_1.setSpeed( -1.0 );
          break;
 
       case 2:
          CYL_1.setSpeed( 0 );
-         CYL_2.setSpeed( -1.5 );
+         CYL_2.setSpeed( -1.0 );
          break;
 
       case 3:
          CYL_2.setSpeed( 0 );
-         CYL_3.setSpeed( -1.5 );
+         CYL_3.setSpeed( -1.0 );
          break;
 
       case 4:
          CYL_3.setSpeed( 0 );
-         CYL_4.setSpeed( -1.5 );
+         CYL_4.setSpeed( -1.0 );
          break;
 
       default:
@@ -144,22 +144,22 @@ void empty_operation()
          break;
 
       case 1:
-         CYL_1.setSpeed( 0.5 );
-         break;
+         CYL_1.setSpeed( 0.2 );
+         //break;
 
       case 2:
-         CYL_1.setSpeed( 0 );
-         CYL_2.setSpeed( 0.5 );
-         break;
+         //CYL_1.setSpeed( 0 );
+         CYL_2.setSpeed( 0.2 );
+         //break;
 
       case 3:
-         CYL_2.setSpeed( 0 );
-         CYL_3.setSpeed( 0.5 );
-         break;
+         //CYL_2.setSpeed( 0 );
+         CYL_3.setSpeed( 0.2 );
+         //break;
 
       case 4:
-         CYL_3.setSpeed( 0 );
-         CYL_4.setSpeed( 0.5 );
+         //CYL_3.setSpeed( 0 );
+         CYL_4.setSpeed( 0.2 );
          break;
 
       default:

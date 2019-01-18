@@ -3,7 +3,7 @@
 const int MOTOR_PULSE_RATE    = 50000;
 const int CONTROL_RATE        = 500;
 const int BUTTON_CHECK_RATE   = 100;
-const int DISPLAY_UPDATE_RATE = 10;
+const int DISPLAY_UPDATE_RATE = 15;
 const int MAINTENANCE_RATE    = 1;
 
 
@@ -30,6 +30,8 @@ uint32_t extrudeTime = 0;
 uint32_t extrudeStartTime;
 
 bool motorEnableStatus = false;
+
+bool noTouch = true;
 
 
 

@@ -48,6 +48,7 @@
 #define SPI0_MOSI 11
 #define SPI0_MISO 12
 #define SPI0_SCK  13
+#define TFT_DC    30
 
 #define BED_THERMISTOR       14
 #define EXTRUDER1_THERMISTOR 15

@@ -5,12 +5,12 @@
 #include "src/PollTimer/PollTimer.h"
 #include "src/uButton/uButton.h"
 
+#include "pin_map.h"
+#include "variables.h"
+
+#include "communication.h"
 #include "display.h"
 
-#include "pin_map.h"
-#include "communication.h"
-
-#include "variables.h"
 #include "motors.h"
 #include "Lucid.h"
 #include "operations.h"
@@ -20,6 +20,8 @@
 void setup() 
 {
    start_serial();
+
+   startDisplay();
 
    setupButtons();
 
@@ -120,10 +122,16 @@ void loop()
          }
          Serial.println(selected_cyl);
       }
+
    }
    else if( display.check() )
    {
-      //Serial.println( cyl_1_position );
+      if(touch_screen.touched())
+      {
+         TS_Point p = touch_screen.getPoint();
+
+         onTouch(p.x, p.y);
+      }
    }
    else if( maintenance.check() )
    {
