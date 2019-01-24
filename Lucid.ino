@@ -30,6 +30,9 @@ void setup()
    startStepperTickISR();
 
    startTimers();
+
+   //pinMode( BED_THERMISTOR, OUTPUT); digitalWrite( BED_THERMISTOR, LOW);
+   //pinMode( EXTRUDER1_THERMISTOR, OUTPUT); digitalWrite( EXTRUDER1_THERMISTOR, LOW);
 }
 
 
@@ -78,12 +81,13 @@ void loop()
       {
          Serial.println("GREEN");
 
-         extrudeActive = !extrudeActive;
-         
-         if( extrudeActive ) 
+         if( machine_state == dwell )
          {
-            enableMotors();
-            readRecipie();
+            machine_state = prePurge;
+         }
+         else
+         {
+            machine_state = dwell; // stop dispensing if green button is hit while doing anything other thna dwell
          }
       }
 
@@ -141,15 +145,4 @@ void loop()
       //Serial.println( funCounter );
       funCounter = 0;
    }
-}
-
-
-void readRecipie()
-{
-   C[BLUE  ].ratio = 1.0;
-   C[RED   ].ratio = 1.0;
-   C[YELLOW].ratio = 1.0;
-   C[WHITE ].ratio = 1.0;
-
-   mixVolume = 1.0;
 }

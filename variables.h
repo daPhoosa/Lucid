@@ -7,7 +7,7 @@ const int DISPLAY_UPDATE_RATE = 15;
 const int MAINTENANCE_RATE    = 1;
 
 
-const uint32_t purgeTime  = 1000;
+const uint32_t purgeTime  = 100;
 const float    purgeSpeed = 1.0f;
 
 

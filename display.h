@@ -41,7 +41,7 @@
 
 //#include <Fonts/FreeSerif12pt7b.h>
 //#include <Fonts/FreeSerif18pt7b.h>
-#include <Fonts/FreeSerif24pt7b.h>
+//#include <Fonts/FreeSerif24pt7b.h>
 //#include <Fonts/FreeSerif9pt7b.h>
 //#include <Fonts/FreeSerifBold12pt7b.h>
 //#include <Fonts/FreeSerifBold18pt7b.h>
@@ -49,7 +49,7 @@
 //#include <Fonts/FreeSerifBold9pt7b.h>
 //#include <Fonts/FreeSerifBoldItalic12pt7b.h>
 //#include <Fonts/FreeSerifBoldItalic18pt7b.h>
-//#include <Fonts/FreeSerifBoldItalic24pt7b.h>
+#include <Fonts/FreeSerifBoldItalic24pt7b.h>
 //#include <Fonts/FreeSerifBoldItalic9pt7b.h>
 //#include <Fonts/FreeSerifItalic12pt7b.h>
 //#include <Fonts/FreeSerifItalic18pt7b.h>
@@ -63,6 +63,8 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(SPI0_CS, TFT_DC);
 
 const int screen_width  = 240;
 const int screen_height = 320;
+
+#define RGB2HEX(R, G, B) (((R>>3)<<11) | ((G>>3)<<6) | (B>>3)) // convert 8bit RGB to 5bit hex
 
 /*
 // Color definitions
@@ -87,7 +89,8 @@ const int screen_height = 320;
 #define ILI9341_PINK        0xFC18  ///< 255, 130, 198
 */
 
-const int BACKGROUND = ILI9341_DARKGREY;
+const unsigned int BACKGROUND = RGB2HEX( 32, 32, 32 );
+const int maxSplit = 255;
 
 
 struct v_bar_graph_data_t
@@ -95,14 +98,14 @@ struct v_bar_graph_data_t
    int x, y, w, h, s, c;
 };
 
-v_bar_graph_data_t vBlue   = {   8, 112, 50, 200, 50, ILI9341_BLUE };
-v_bar_graph_data_t vRed    = {  66, 112, 50, 200, 50, ILI9341_RED };
-v_bar_graph_data_t vYellow = { 124, 112, 50, 200, 50, ILI9341_YELLOW };
-v_bar_graph_data_t vWhite  = { 182, 112, 50, 200, 50, ILI9341_WHITE };
+v_bar_graph_data_t vBlue   = {   8, 112, 50, 150, 128, ILI9341_BLUE };
+v_bar_graph_data_t vRed    = {  66, 112, 50, 150, 128, ILI9341_RED };
+v_bar_graph_data_t vYellow = { 124, 112, 50, 150, 128, ILI9341_YELLOW };
+v_bar_graph_data_t vWhite  = { 182, 112, 50, 150, 128, ILI9341_WHITE };
 
 void drawSplitBar( v_bar_graph_data_t b )
 {
-   int i = ( b.s * b.h ) / 100;
+   int i = ( b.s * b.h ) / maxSplit;
    tft.fillRect( b.x, b.y, b.w, b.h-i, 0 );
    tft.fillRect( b.x, b.y+b.h-i, b.w, i, b.c );
 }
@@ -139,7 +142,7 @@ bool touchInBar( int x, int y, v_bar_graph_data_t & b )
          {
             b.s--;
          }
-         b.s = constrain( b.s, 0, 100);
+         b.s = constrain( b.s, 0, maxSplit);
          drawSplitBar( b );
          barShowSplit( b );
          return true;
@@ -151,10 +154,19 @@ bool touchInBar( int x, int y, v_bar_graph_data_t & b )
 
 void lucidSplashScreen()
 {
+   String t = "LUCID";
+   int x = 50;
+   int y = 50;
+
+   tft.setFont(&FreeSerifBoldItalic24pt7b);
+
+   tft.setCursor( x+3, y+3 );
+   tft.setTextColor(ILI9341_BLACK);
+   tft.println(t);
+
+   tft.setCursor( x, y );
    tft.setTextColor(ILI9341_WHITE);
-   //tft.setTextSize(3);
-   tft.setFont(&FreeSerif24pt7b);
-   tft.println("LUCID");
+   tft.println(t);
 }
 
 
@@ -167,9 +179,7 @@ void startDisplay()
    //tft.fillScreen(ILI9341_BLACK);
    tft.fillScreen(BACKGROUND);
 
-   tft.setRotation(0); 
-
-   tft.setCursor( 50, 50);
+   tft.setRotation(2); 
 
    lucidSplashScreen();
 
@@ -193,8 +203,8 @@ void startDisplay()
 
 void onTouch( int x, int y)
 {
-   x = screen_width  - x; // translate from touch coordinates to pixel coordinates
-   y = screen_height - y;
+   //x = screen_width  - x; // translate from touch coordinates to pixel coordinates
+   //y = screen_height - y;
 
    if( touchInBar( x, y, vBlue ) )
    {

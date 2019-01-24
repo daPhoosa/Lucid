@@ -8,7 +8,7 @@ void sleep_operations()
 
 void dwell_operations()
 {
-
+   disableMotors();
 }
 
 
@@ -47,23 +47,49 @@ void pre_purge_operations()
 
 void dispense_operations()
 {
-   if( millis() - extrudeStartTime > extrudeTime )
+   static uint32_t startTime;
+   static bool active = false;
+
+   uint32_t dispenseTime = 4000; // 4 second
+
+   if( active )
    {
-      extrudeActive = false;
-      disableMotors();
+      if( millis() - startTime > dispenseTime ) // operation complete
+      {
+         active = false;
+
+         machine_state = postPurge; // go to next operation
+      }
+      else
+      {
+         // operation active
+      }
    }
-   else
+   else  // become active
    {
-      CYL_1.setSpeed( C[BLUE  ].speed );
-      CYL_2.setSpeed( C[RED   ].speed );
-      CYL_3.setSpeed( C[YELLOW].speed );
-      CYL_4.setSpeed( C[WHITE ].speed );
-      //CYL_5.setSpeed( C[ ].speed );
-      //CYL_6.setSpeed( C[ ].speed );
-      //CYL_7.setSpeed( C[ ].speed );
-      //CYL_8.setSpeed( C[ ].speed );
-      //CYL_9.setSpeed( C[ ].speed );
+      startTime = millis();
+      active = true;
+      enableMotors();
+
+      if( vBlue.s || vRed.s || vYellow.s || vWhite.s )
+      {
+         float invSumSpeed = 1.0f / float(vBlue.s + vRed.s + vYellow.s + vWhite.s);
+  
+         CYL_1.setSpeed( float(vBlue.s)   * invSumSpeed );
+         CYL_2.setSpeed( float(vRed.s)    * invSumSpeed );
+         CYL_3.setSpeed( float(vYellow.s) * invSumSpeed );
+         CYL_4.setSpeed( float(vWhite.s)  * invSumSpeed );
+      }
+      else
+      {
+         CYL_1.setSpeed( 0 );
+         CYL_2.setSpeed( 0 );
+         CYL_3.setSpeed( 0 );
+         CYL_4.setSpeed( 0 );  
+      }
+
    }
+
 }
 
 
@@ -109,22 +135,22 @@ void fill_operation()
          break;
 
       case 1:
-         CYL_1.setSpeed( -1.0 );
+         CYL_1.setSpeed( -0.2 );
          break;
 
       case 2:
          CYL_1.setSpeed( 0 );
-         CYL_2.setSpeed( -1.0 );
+         CYL_2.setSpeed( -0.2 );
          break;
 
       case 3:
          CYL_2.setSpeed( 0 );
-         CYL_3.setSpeed( -1.0 );
+         CYL_3.setSpeed( -0.2 );
          break;
 
       case 4:
          CYL_3.setSpeed( 0 );
-         CYL_4.setSpeed( -1.0 );
+         CYL_4.setSpeed( -0.2 );
          break;
 
       default:
@@ -145,20 +171,20 @@ void empty_operation()
 
       case 1:
          CYL_1.setSpeed( 0.2 );
-         //break;
+         break;
 
       case 2:
-         //CYL_1.setSpeed( 0 );
+         CYL_1.setSpeed( 0 );
          CYL_2.setSpeed( 0.2 );
-         //break;
+         break;
 
       case 3:
-         //CYL_2.setSpeed( 0 );
+         CYL_2.setSpeed( 0 );
          CYL_3.setSpeed( 0.2 );
-         //break;
+         break;
 
       case 4:
-         //CYL_3.setSpeed( 0 );
+         CYL_3.setSpeed( 0 );
          CYL_4.setSpeed( 0.2 );
          break;
 
