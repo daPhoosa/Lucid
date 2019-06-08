@@ -44,7 +44,7 @@ enum machine_state_t
    postPurge,
    fill,
    empty
-} machine_state;
+} machine_state = dwell;
 
 struct COMPONENT_DATA_t
 {

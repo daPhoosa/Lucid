@@ -7,6 +7,7 @@
 
 #include "pin_map.h"
 #include "variables.h"
+#include "color_conversion.h"
 
 #include "communication.h"
 #include "display.h"

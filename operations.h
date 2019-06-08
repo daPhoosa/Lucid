@@ -50,7 +50,7 @@ void dispense_operations()
    static uint32_t startTime;
    static bool active = false;
 
-   uint32_t dispenseTime = 4000; // 4 second
+   uint32_t dispenseTime = 5000; // 4 second
 
    if( active )
    {

@@ -300,7 +300,7 @@ color_CMYW_t RGB_to_CMYW( color_RGB_t c )
  *   ( Add "#define SerialPort Serial" above #include to enable these functions to output )
  */
 
-
+/*
 void display( color_Lab_t c )
 {
    #ifdef SerialPort
@@ -347,3 +347,4 @@ void display( color_CMYW_t c )
    SerialPort.print("W: ");SerialPort.println(c.W);
    #endif
 }
+*/

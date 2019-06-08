@@ -31,7 +31,7 @@
 //#include <Fonts/FreeSansBold24pt7b.h>		
 //#include <Fonts/FreeSansBold9pt7b.h>		
 //#include <Fonts/FreeSansBoldOblique12pt7b.h>
-//#include <Fonts/FreeSansBoldOblique18pt7b.h>
+#include <Fonts/FreeSansBoldOblique18pt7b.h>
 //#include <Fonts/FreeSansBoldOblique24pt7b.h>
 //#include <Fonts/FreeSansBoldOblique9pt7b.h>
 //#include <Fonts/FreeSansOblique12pt7b.h>
@@ -49,12 +49,12 @@
 //#include <Fonts/FreeSerifBold9pt7b.h>
 //#include <Fonts/FreeSerifBoldItalic12pt7b.h>
 //#include <Fonts/FreeSerifBoldItalic18pt7b.h>
-#include <Fonts/FreeSerifBoldItalic24pt7b.h>
+//#include <Fonts/FreeSerifBoldItalic24pt7b.h>
 //#include <Fonts/FreeSerifBoldItalic9pt7b.h>
 //#include <Fonts/FreeSerifItalic12pt7b.h>
 //#include <Fonts/FreeSerifItalic18pt7b.h>
 //#include <Fonts/FreeSerifItalic24pt7b.h>
-//#include <Fonts/FreeSerifItalic9pt7b.h>
+#include <Fonts/FreeSerifItalic9pt7b.h>
 
 // The FT6206 uses hardware I2C (SCL/SDA)
 Adafruit_FT6206 touch_screen = Adafruit_FT6206();
@@ -64,7 +64,7 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(SPI0_CS, TFT_DC);
 const int screen_width  = 240;
 const int screen_height = 320;
 
-#define RGB2HEX(R, G, B) (((R>>3)<<11) | ((G>>3)<<6) | (B>>3)) // convert 8bit RGB to 5bit hex
+#define RGB8_to_RGB5(R, G, B) (((R>>3)<<11) | ((G>>3)<<6) | (B>>3)) // convert 8bit RGB to 5bit RGB
 
 /*
 // Color definitions
@@ -89,7 +89,7 @@ const int screen_height = 320;
 #define ILI9341_PINK        0xFC18  ///< 255, 130, 198
 */
 
-const unsigned int BACKGROUND = RGB2HEX( 32, 32, 32 );
+const unsigned int BACKGROUND = RGB8_to_RGB5( 64, 64, 64 );
 const int maxSplit = 255;
 
 
@@ -154,19 +154,29 @@ bool touchInBar( int x, int y, v_bar_graph_data_t & b )
 
 void lucidSplashScreen()
 {
-   String t = "LUCID";
-   int x = 50;
-   int y = 50;
+   String t = "RPM";
+   const int x = 70;
+   const int y = 24;
 
-   tft.setFont(&FreeSerifBoldItalic24pt7b);
+   //tft.setFont(&FreeSerifBoldItalic24pt7b);
+   tft.setFont(&FreeSansBoldOblique18pt7b);
 
-   tft.setCursor( x+3, y+3 );
+   tft.setCursor( x+3, y+3 ); // shadow
    tft.setTextColor(ILI9341_BLACK);
    tft.println(t);
 
-   tft.setCursor( x, y );
+   tft.setCursor( x, y );     // text
    tft.setTextColor(ILI9341_WHITE);
    tft.println(t);
+
+   tft.setFont(&FreeSerifItalic9pt7b);
+   tft.setTextColor(ILI9341_BLACK); // shadow
+   tft.setCursor( x-2, y+18 );
+   tft.println("Mon Spectre");
+   tft.setTextColor(ILI9341_WHITE); // text
+   tft.setCursor( x-3, y+17 );
+   tft.println("Mon Spectre");
+
 }
 
 
