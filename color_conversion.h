@@ -293,6 +293,13 @@ color_CMYW_t RGB_to_CMYW( color_RGB_t c )
    return a;
 };
 
+color_RGB_t Lab_to_RGB( const color_Lab_t c )
+{
+   // Lab ==> XYZ ==> RGB
+
+   return XYZ_to_RGB( Lab_to_XYZ( c ));
+}
+
 
 
 /*

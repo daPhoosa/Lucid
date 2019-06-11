@@ -4,6 +4,7 @@
 #include "src/stepperMotor/stepperMotor.h"
 #include "src/PollTimer/PollTimer.h"
 #include "src/uButton/uButton.h"
+#include "src/uMove/uMove.h"
 
 #include "pin_map.h"
 #include "variables.h"

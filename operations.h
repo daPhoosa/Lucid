@@ -128,6 +128,8 @@ void post_purge_operations()
 
 void fill_operation()
 {
+   const float speed = -0.4f;
+
    switch( selected_cyl )
    {
       case 0:
@@ -135,22 +137,22 @@ void fill_operation()
          break;
 
       case 1:
-         CYL_1.setSpeed( -0.2 );
+         CYL_1.setSpeed( speed );
          break;
 
       case 2:
          CYL_1.setSpeed( 0 );
-         CYL_2.setSpeed( -0.2 );
+         CYL_2.setSpeed( speed );
          break;
 
       case 3:
          CYL_2.setSpeed( 0 );
-         CYL_3.setSpeed( -0.2 );
+         CYL_3.setSpeed( speed );
          break;
 
       case 4:
          CYL_3.setSpeed( 0 );
-         CYL_4.setSpeed( -0.2 );
+         CYL_4.setSpeed( speed );
          break;
 
       default:
@@ -163,6 +165,8 @@ void fill_operation()
 
 void empty_operation()
 {
+   const float speed = 0.4f;
+
    switch( selected_cyl )
    {
       case 0:
@@ -170,22 +174,22 @@ void empty_operation()
          break;
 
       case 1:
-         CYL_1.setSpeed( 0.2 );
+         CYL_1.setSpeed( speed );
          break;
 
       case 2:
          CYL_1.setSpeed( 0 );
-         CYL_2.setSpeed( 0.2 );
+         CYL_2.setSpeed( speed );
          break;
 
       case 3:
          CYL_2.setSpeed( 0 );
-         CYL_3.setSpeed( 0.2 );
+         CYL_3.setSpeed( speed );
          break;
 
       case 4:
          CYL_3.setSpeed( 0 );
-         CYL_4.setSpeed( 0.2 );
+         CYL_4.setSpeed( speed );
          break;
 
       default:
