@@ -50,7 +50,7 @@ void dispense_operations()
    static uint32_t startTime;
    static bool active = false;
 
-   uint32_t dispenseTime = 5000; // 4 second
+   uint32_t dispenseTime = 5000; // miliseconds
 
    if( active )
    {
@@ -71,21 +71,21 @@ void dispense_operations()
       active = true;
       enableMotors();
 
-      if( vBlue.s || vRed.s || vYellow.s || vWhite.s )
+      if( vBlue.value || vRed.value || vYellow.value || vWhite.value )
       {
-         float invSumSpeed = 1.0f / float(vBlue.s + vRed.s + vYellow.s + vWhite.s);
+         float invSum = 1.0f / float(vBlue.value + vRed.value + vYellow.value + vWhite.value );
   
-         CYL_1.setSpeed( float(vBlue.s)   * invSumSpeed );
-         CYL_2.setSpeed( float(vRed.s)    * invSumSpeed );
-         CYL_3.setSpeed( float(vYellow.s) * invSumSpeed );
-         CYL_4.setSpeed( float(vWhite.s)  * invSumSpeed );
+         CYL_1.setSpeed( float( vBlue.value )   * invSum ); // Normalize
+         CYL_2.setSpeed( float( vRed.value )    * invSum );
+         CYL_3.setSpeed( float( vYellow.value ) * invSum );
+         CYL_4.setSpeed( float( vWhite.value )  * invSum );
       }
       else
       {
-         CYL_1.setSpeed( 0 );
-         CYL_2.setSpeed( 0 );
-         CYL_3.setSpeed( 0 );
-         CYL_4.setSpeed( 0 );  
+         CYL_1.setSpeed( 0.33333f ); // BLACK
+         CYL_2.setSpeed( 0.33333f );
+         CYL_3.setSpeed( 0.33333f );
+         CYL_4.setSpeed( 0 );
       }
 
    }
@@ -95,7 +95,7 @@ void dispense_operations()
 
 void post_purge_operations()
 {
-  static uint32_t startTime;
+   static uint32_t startTime;
    static bool active = false;
 
    if( active )

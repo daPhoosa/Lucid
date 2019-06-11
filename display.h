@@ -51,7 +51,7 @@
 //#include <Fonts/FreeSerifBoldItalic18pt7b.h>
 //#include <Fonts/FreeSerifBoldItalic24pt7b.h>
 //#include <Fonts/FreeSerifBoldItalic9pt7b.h>
-//#include <Fonts/FreeSerifItalic12pt7b.h>
+#include <Fonts/FreeSerifItalic12pt7b.h>
 //#include <Fonts/FreeSerifItalic18pt7b.h>
 //#include <Fonts/FreeSerifItalic24pt7b.h>
 #include <Fonts/FreeSerifItalic9pt7b.h>
@@ -90,22 +90,28 @@ const int screen_height = 320;
 */
 
 const unsigned int BACKGROUND = RGB8_to_RGB5( 64, 64, 64 );
-const int maxSplit = 255;
-
 
 struct v_bar_graph_data_t
 {
-   int x, y, w, h, s, c;
+   int x, y, w, h, value, minimum, maximum, c;
 };
 
-v_bar_graph_data_t vBlue   = {   8, 112, 50, 150, 128, ILI9341_BLUE };
-v_bar_graph_data_t vRed    = {  66, 112, 50, 150, 128, ILI9341_RED };
-v_bar_graph_data_t vYellow = { 124, 112, 50, 150, 128, ILI9341_YELLOW };
-v_bar_graph_data_t vWhite  = { 182, 112, 50, 150, 128, ILI9341_WHITE };
+//                              x    y   w    h    v   mi ma     color
+v_bar_graph_data_t vBlue   = {   8, 80, 50, 150, 128,  0, 255, ILI9341_CYAN };
+v_bar_graph_data_t vRed    = {  66, 80, 50, 150, 128,  0, 255, ILI9341_MAGENTA };
+v_bar_graph_data_t vYellow = { 124, 80, 50, 150, 128,  0, 255, ILI9341_YELLOW };
+v_bar_graph_data_t vWhite  = { 182, 80, 50, 150, 128,  0, 255, ILI9341_WHITE };
+
+v_bar_graph_data_t vLAB_L  = {   8, 80, 50, 150, 100,  0,  100, ILI9341_WHITE };
+v_bar_graph_data_t vLAB_A  = {  66, 80, 50, 150,  0, -128, 127, ILI9341_WHITE };
+v_bar_graph_data_t vLAB_B  = { 124, 80, 50, 150,  0, -128, 127, ILI9341_WHITE };
+v_bar_graph_data_t v_QTY   = { 182, 80, 50, 150,  5,  0,   10,  ILI9341_WHITE };
+
+v_bar_graph_data_t v_RGB   = { 182, 80, 50, 150, 100,  0,  100, ILI9341_WHITE };
 
 void drawSplitBar( v_bar_graph_data_t b )
 {
-   int i = ( b.s * b.h ) / maxSplit;
+   int i = (( b.value - b.minimum ) * b.h ) / ( b.maximum - b.minimum );
    tft.fillRect( b.x, b.y, b.w, b.h-i, 0 );
    tft.fillRect( b.x, b.y+b.h-i, b.w, i, b.c );
 }
@@ -125,7 +131,13 @@ void barShowSplit( v_bar_graph_data_t b )
    tft.setTextSize(2);
    tft.setTextColor( ILI9341_WHITE, BACKGROUND);
    tft.setCursor( x, y);
-   tft.print(b.s);
+   tft.print(b.value);
+}
+
+void updateBar( v_bar_graph_data_t b )
+{
+   drawSplitBar( b );
+   barShowSplit( b );
 }
 
 bool touchInBar( int x, int y, v_bar_graph_data_t & b )
@@ -136,15 +148,14 @@ bool touchInBar( int x, int y, v_bar_graph_data_t & b )
       {
          if( y < (b.y+b.h/2)) // in top half of bar
          {
-            b.s++; 
+            b.value++; 
          }
          else // bottom half of bar
          {
-            b.s--;
+            b.value--;
          }
-         b.s = constrain( b.s, 0, maxSplit);
-         drawSplitBar( b );
-         barShowSplit( b );
+         b.value = constrain( b.value, b.minimum, b.maximum);
+         updateBar( b );
          return true;
       }
    }
@@ -155,8 +166,8 @@ bool touchInBar( int x, int y, v_bar_graph_data_t & b )
 void lucidSplashScreen()
 {
    String t = "RPM";
-   const int x = 70;
-   const int y = 24;
+   int x = 15;
+   int y = 30;
 
    //tft.setFont(&FreeSerifBoldItalic24pt7b);
    tft.setFont(&FreeSansBoldOblique18pt7b);
@@ -169,16 +180,26 @@ void lucidSplashScreen()
    tft.setTextColor(ILI9341_WHITE);
    tft.println(t);
 
-   tft.setFont(&FreeSerifItalic9pt7b);
+   x += 85;
+   y += -6;
+
+   tft.setFont(&FreeSerifItalic12pt7b);
    tft.setTextColor(ILI9341_BLACK); // shadow
-   tft.setCursor( x-2, y+18 );
+   tft.setCursor( x+2, y+2 );
    tft.println("Mon Spectre");
    tft.setTextColor(ILI9341_WHITE); // text
-   tft.setCursor( x-3, y+17 );
+   tft.setCursor( x, y );
    tft.println("Mon Spectre");
 
 }
 
+
+void initDrawBar( v_bar_graph_data_t b )
+{
+   drawBarBorder( b );
+   drawSplitBar(  b );
+   barShowSplit(  b );
+}
 
 void startDisplay()
 {
@@ -193,44 +214,70 @@ void startDisplay()
 
    lucidSplashScreen();
 
-   drawBarBorder( vBlue );
-   drawSplitBar(  vBlue );
-   barShowSplit(  vBlue );
+   // *** RGB BARS
+   initDrawBar( vBlue );
+   initDrawBar( vRed );
+   initDrawBar( vYellow );
+   initDrawBar( vWhite );
 
-   drawBarBorder( vRed );
-   drawSplitBar(  vRed );
-   barShowSplit(  vRed );
-
-   drawBarBorder( vYellow );
-   drawSplitBar(  vYellow );
-   barShowSplit(  vYellow );
-   
-   drawBarBorder( vWhite );
-   drawSplitBar(  vWhite );
-   barShowSplit(  vWhite );
+   // *** LAB BARS
+   //initDrawBar( vLAB_L );
+   //initDrawBar( vRed );
+   //initDrawBar( vYellow );
+   //initDrawBar( vWhite );
 }
 
+bool RGB_touch_check( int x, int y )
+{
+   if( touchInBar( x, y, vBlue   ) ) return true;
+   if( touchInBar( x, y, vRed    ) ) return true;
+   if( touchInBar( x, y, vYellow ) ) return true;
+   if( touchInBar( x, y, vWhite  ) ) return true;
 
-void onTouch( int x, int y)
+   return false;
+}
+
+bool LAB_touch_check( int x, int y )
+{
+   if( touchInBar( x, y, vLAB_L ) ) return true;
+   if( touchInBar( x, y, vLAB_A ) ) return true;
+   if( touchInBar( x, y, vLAB_B ) ) return true;
+   if( touchInBar( x, y, v_QTY  ) ) return true;
+
+   return false;
+}
+
+void onTouch( int x, int y, bool longTouch )
 {
    //x = screen_width  - x; // translate from touch coordinates to pixel coordinates
    //y = screen_height - y;
 
-   if( touchInBar( x, y, vBlue ) )
+   // in the future use longTouch for drag motion
+
+   RGB_touch_check( x, y );
+
+   /*
+   if( LAB_touch_check( x, y ) )
    {
+      color_Lab_t c_Lab = { vLAB_L.value, vLAB_A.value, vLAB_B.value };
+      color_RGB_t c_RGB = Lab_to_RGB( c_Lab );
+
+      // update color preview
+      v_RGB.c  = RGB8_to_RGB5( c_RGB.R, c_RGB.G, c_RGB.B );
+      drawSplitBar( v_RGB.c )
+
+      // update CMYW colors
+      color_CMYW_t c_CMYW = RGB_to_CMYW( c_RGB );
+      vBlue.c   = c_CMYW.C;
+      vRed.c    = c_CMYW.M;
+      vYellow.c = c_CMYW.Y;
+      vWhite.c  = c_CMYW.W;
+
+      updateBar( vBlue );
+      updateBar( vRed  );
+      updateBar( vYellow );
+      updateBar( vWhite  );
 
    }
-   else if( touchInBar( x, y, vRed ) )
-   {
-
-   }
-   else if( touchInBar( x, y, vYellow ) )
-   {
-
-   }
-   else if( touchInBar( x, y, vWhite ) )
-   {
-
-   }
-   
+    */
 }

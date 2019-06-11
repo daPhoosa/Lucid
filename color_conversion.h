@@ -283,12 +283,12 @@ color_CMYW_t RGB_to_CMYW( color_RGB_t c )
 {
    color_CMYW_t a;
 
-   a.C = ( 1.0f - c.R );
-   a.M = ( 1.0f - c.G );
-   a.Y = ( 1.0f - c.B );
-   a.W = sqrtf( 3.0f - ( a.C*a.C + a.M*a.M + a.Y*a.Y )); // when RGB = 1,1,1 then only white, when RGB = 0,0,0 then no white
+   a.C = 1.0f - c.R;
+   a.M = 1.0f - c.G;
+   a.Y = 1.0f - c.B;
+   a.W = 1.0f - max( a.C, max( a.M, a.Y )); // when RGB = 1,1,1 then only white, when RGB = 0,0,0 then no white
 
-   // future: add normalization to prevent white from being greater than 1, for now I don't care...
+   // future: this needs to be validated somehow
 
    return a;
 };

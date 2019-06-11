@@ -132,12 +132,21 @@ void loop()
    }
    else if( display.check() )
    {
+      static bool prevTouch = false;
+
       if(touch_screen.touched())
       {
+         prevTouch = true;
+
          TS_Point p = touch_screen.getPoint();
 
-         onTouch(p.x, p.y);
+         onTouch(p.x, p.y, prevTouch);
       }
+      else
+      {
+         prevTouch = false;
+      }
+      
    }
    else if( maintenance.check() )
    {
