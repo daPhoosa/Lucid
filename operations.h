@@ -71,10 +71,11 @@ void dispense_operations()
       active = true;
       enableMotors();
 
+      /* // RGB
       if( vBlue.value || vRed.value || vYellow.value || vWhite.value )
       {
          float invSum = 1.0f / float(vBlue.value + vRed.value + vYellow.value + vWhite.value );
-  
+
          CYL_1.setSpeed( float( vBlue.value )   * invSum ); // Normalize
          CYL_2.setSpeed( float( vRed.value )    * invSum );
          CYL_3.setSpeed( float( vYellow.value ) * invSum );
@@ -87,6 +88,16 @@ void dispense_operations()
          CYL_3.setSpeed( 0.33333f );
          CYL_4.setSpeed( 0 );
       }
+      */
+
+      // Lab color conversion
+      color_Lab_t a( vLAB_L.value, vLAB_A.value, vLAB_B.value );
+      color_XYZ_t b = Lab_to_XYZ( a );
+      ColorSolver.get_solution_XYZ( b.X, b.Y, b.Z );
+      CYL_1.setSpeed( ColorSolver.get_weight(BLUE) ); // Normalize
+      CYL_2.setSpeed( ColorSolver.get_weight(RED) );
+      CYL_3.setSpeed( ColorSolver.get_weight(YELLOW) );
+      CYL_4.setSpeed( ColorSolver.get_weight(WHITE) );
 
    }
 

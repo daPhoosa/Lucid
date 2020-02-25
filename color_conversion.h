@@ -279,25 +279,16 @@ color_CMYK_t RGB_to_CMYK( color_RGB_t c )
    return a;
 }
 
-color_CMYW_t RGB_to_CMYW( color_RGB_t c )
-{
-   color_CMYW_t a;
-
-   a.C = 1.0f - c.R;
-   a.M = 1.0f - c.G;
-   a.Y = 1.0f - c.B;
-   a.W = 1.0f - max( a.C, max( a.M, a.Y )); // when RGB = 1,1,1 then only white, when RGB = 0,0,0 then no white
-
-   // future: this needs to be validated somehow
-
-   return a;
-};
-
 color_RGB_t Lab_to_RGB( const color_Lab_t c )
 {
    // Lab ==> XYZ ==> RGB
+   color_RGB_t a = XYZ_to_RGB( Lab_to_XYZ( c ));
 
-   return XYZ_to_RGB( Lab_to_XYZ( c ));
+   a.R = constrain( a.R, 0.0f, 1.0f ); // constrain to prevent colors outside of RGB gamut
+   a.G = constrain( a.G, 0.0f, 1.0f );
+   a.B = constrain( a.B, 0.0f, 1.0f );
+
+   return a;
 }
 
 

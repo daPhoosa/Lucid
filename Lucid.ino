@@ -9,6 +9,7 @@
 #include "pin_map.h"
 #include "variables.h"
 #include "color_conversion.h"
+#include "grad_descent.h"
 
 #include "communication.h"
 #include "display.h"
@@ -32,6 +33,8 @@ void setup()
    startStepperTickISR();
 
    startTimers();
+
+   setupColors();
 
    //pinMode( BED_THERMISTOR, OUTPUT); digitalWrite( BED_THERMISTOR, LOW);
    //pinMode( EXTRUDER1_THERMISTOR, OUTPUT); digitalWrite( EXTRUDER1_THERMISTOR, LOW);

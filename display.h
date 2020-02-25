@@ -107,7 +107,7 @@ v_bar_graph_data_t vLAB_A  = {  66, 80, 50, 150,  0, -128, 127, ILI9341_WHITE };
 v_bar_graph_data_t vLAB_B  = { 124, 80, 50, 150,  0, -128, 127, ILI9341_WHITE };
 v_bar_graph_data_t v_QTY   = { 182, 80, 50, 150,  5,  0,   10,  ILI9341_WHITE };
 
-v_bar_graph_data_t v_RGB   = { 182, 80, 50, 150, 100,  0,  100, ILI9341_WHITE };
+v_bar_graph_data_t v_RGB   = { 0, 250, 250, 50, 100,  0,  100, ILI9341_WHITE };
 
 void drawSplitBar( v_bar_graph_data_t b )
 {
@@ -215,16 +215,18 @@ void startDisplay()
    lucidSplashScreen();
 
    // *** RGB BARS
-   initDrawBar( vBlue );
-   initDrawBar( vRed );
-   initDrawBar( vYellow );
-   initDrawBar( vWhite );
-
-   // *** LAB BARS
-   //initDrawBar( vLAB_L );
+   //initDrawBar( vBlue );
    //initDrawBar( vRed );
    //initDrawBar( vYellow );
    //initDrawBar( vWhite );
+
+   // *** LAB BARS
+   initDrawBar( vLAB_L );
+   initDrawBar( vLAB_A );
+   initDrawBar( vLAB_B );
+   initDrawBar( v_QTY );
+
+   initDrawBar( v_RGB );
 }
 
 bool RGB_touch_check( int x, int y )
@@ -254,30 +256,22 @@ void onTouch( int x, int y, bool longTouch )
 
    // in the future use longTouch for drag motion
 
-   RGB_touch_check( x, y );
+   //RGB_touch_check( x, y );
 
-   /*
+
    if( LAB_touch_check( x, y ) )
    {
-      color_Lab_t c_Lab = { vLAB_L.value, vLAB_A.value, vLAB_B.value };
+      color_Lab_t c_Lab = { float(vLAB_L.value), float(vLAB_A.value), float(vLAB_B.value) };
       color_RGB_t c_RGB = Lab_to_RGB( c_Lab );
 
+      //Serial.print( c_RGB.R ); Serial.print(",");
+      //Serial.print( c_RGB.G ); Serial.print(",");
+      //Serial.println( c_RGB.B );
+
       // update color preview
-      v_RGB.c  = RGB8_to_RGB5( c_RGB.R, c_RGB.G, c_RGB.B );
-      drawSplitBar( v_RGB.c )
-
-      // update CMYW colors
-      color_CMYW_t c_CMYW = RGB_to_CMYW( c_RGB );
-      vBlue.c   = c_CMYW.C;
-      vRed.c    = c_CMYW.M;
-      vYellow.c = c_CMYW.Y;
-      vWhite.c  = c_CMYW.W;
-
-      updateBar( vBlue );
-      updateBar( vRed  );
-      updateBar( vYellow );
-      updateBar( vWhite  );
+      v_RGB.c  = RGB8_to_RGB5( int(c_RGB.R*255.0), int(c_RGB.G*255.0), int(c_RGB.B*255.0) );
+      drawSplitBar( v_RGB );
 
    }
-    */
+
 }
